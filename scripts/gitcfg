@@ -67,7 +67,9 @@ if [ ! -d $CONFIGS_PATH/.git ]; then
     touch README
 fi 
 
-git add -u; git add .;
+git diff 2>dev/null >> README
+git add -u
+git add .
 git commit -m "Configs. TS: $DATE"
 
 [[ $1 != 'local' ]] && git push -u origin +master;
