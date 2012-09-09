@@ -1,13 +1,1 @@
-diff --git a/scripts/gitcfg b/scripts/gitcfg
-index af598ed..34e67aa 100755
---- a/scripts/gitcfg
-+++ b/scripts/gitcfg
-@@ -67,7 +67,7 @@ if [ ! -d $CONFIGS_PATH/.git ]; then
-     touch README
- fi 
- 
--git diff 2>dev/null >> README
-+git diff >> README
- git add -u
- git add .
- git commit -m "Configs. TS: $DATE"
+.dotfiles

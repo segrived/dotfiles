@@ -64,12 +64,9 @@ pacman -Qe | write_content misc pacman_inst
 if [ ! -d $CONFIGS_PATH/.git ]; then
     git init
     git remote add origin $GITHUB
-    touch README
+    echo ".dotfiles" >> README
 fi 
 
-log=`git diff`
-log="${DATE}\n\n${log}\n\n\n"
-echo "$log" >> log
 git add -u
 git add .
 git commit -m "Configs. TS: $DATE"
