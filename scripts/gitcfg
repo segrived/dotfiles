@@ -67,7 +67,8 @@ if [ ! -d $CONFIGS_PATH/.git ]; then
     touch README
 fi 
 
-git diff >> README
+log=`git diff`
+log="${DATE}\n\n${log}\n\n\n"
 git add -u
 git add .
 git commit -m "Configs. TS: $DATE"
