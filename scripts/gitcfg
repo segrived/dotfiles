@@ -1,0 +1,73 @@
+#!/bin/bash
+
+DATE=`date +"%m-%d-%y %T"`;
+GITHUB='git@github.com:segrived/dotfiles.git';
+CONFIGS_PATH="$HOME/.dot_files/";
+[[ ! -d "$CONFIGS_PATH" ]] && mkdir -p $CONFIGS_PATH;
+
+# Переходим в папку с конфигами
+cd $CONFIGS_PATH;
+
+# Функция записывает контент из stdio в файл
+write_content() {
+    TRG_DIR=$1; TRG_FILE=$2;
+    CONTENT=$(cat);
+    [[ ! -d "$TRG_DIR" ]] && mkdir -p $TRG_DIR
+    touch $TRG_DIR/$TRG_FILE
+    echo "$CONTENT" >> $TRG_DIR/$TRG_FILE
+}
+
+# Функция копирует файл
+copy_file() {
+    SRC_FILE=$1; TRG_DIR=$2; TRG_FILE=$3;
+    [[ ! -e "$SRC_FILE" ]] && return 1
+    [[ ! -d "$TRG_DIR" ]] && mkdir -p $TRG_DIR
+    cp $SRC_FILE $TRG_DIR/$TRG_FILE
+}
+
+# Функция копирует папку
+copy_folder() {
+    SRC=$1; TRG=$2
+    [[ ! -d "$SRC" ]] && return 1
+    [[ ! -d "$TRG" ]] && mkdir -p $TRG
+    cp -r $SRC/* $TRG 2>/dev/null
+}
+
+# Чистим файлы предыдущего коммита
+ls -A | grep -v .git | grep -v README | xargs rm -R 2>/dev/null
+
+copy_folder ~/.config/openbox    home/.config/openbox
+copy_folder ~/.config/geany      home/.config/geany
+copy_folder ~/.conifg/tint2      home/.config/tint2
+copy_folder ~/.config/mc         home/.config/mc
+copy_folder ~/.confif/gtk-3.0    home/.config/gtk-3.0
+copy_folder ~/.config/fontconfig home/.config/fontconfig
+
+copy_folder ~/.vim             home/.vim
+copy_folder ~/.themes          home/.themes
+copy_folder ~/bin              scripts
+
+copy_file ~/.gtkrc-2.0       home   .gtkrc-2.0
+copy_file ~/.bashrc          home   .bashrc
+copy_file ~/.bash_profile    home   .bash_profile
+copy_file ~/.bash_logout     home   .bash_logout
+copy_file ~/.xinitrc         home   .xinitrc
+copy_file ~/.gmrunrc         home   .gmrunrc
+copy_file ~/.xprofile        home   .xprofile
+copy_file ~/.Xresources      home   .Xresources
+copy_file ~/.vimrc           home   .vimrc
+copy_file ~/.gitconfig       home   .gitconfig
+
+pacman -Qq | write_content misc pacman_full
+pacman -Qe | write_content misc pacman_inst
+
+if [ ! -d $CONFIGS_PATH/.git ]; then
+    git init
+    git remote add origin $GITHUB
+    touch README
+fi 
+
+git add -u; git add .;
+git commit -m "Configs. TS: $DATE"
+
+[[ $1 != 'local' ]] && git push -u origin +master;

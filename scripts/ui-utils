@@ -1,0 +1,51 @@
+#! /bin/bash
+
+# Отображает / скрывает окно gmrun. Удобно вешать на какую-то клавишу WM
+launcher_toggle() {
+    [[ -n `pgrep gmrun` ]] && pkill -x gmrun 2>/dev/null || gmrun 2>/dev/null;
+}
+
+
+# Диалог выбора обоины рабочего стола
+show_wallpaper_dialog() {
+    local path="$HOME/"
+    [[ -d "$HOME/wallpapers" ]] && path="$HOME/wallpapers/"
+    file_name=`zenity --file-selection --filename=$path`;
+    feh --bg-scale "$file_name";
+}
+
+
+# В качестве параметра функция получает путь к ISO-файлу и монтирует его в
+# папку ~/mount/_mnt_*имя_iso_файла*, и открывает папку в Thunar (в случае монтирования
+# без ошибок)
+user_mount() {
+    MOUNT_PATH="$HOME/mounts/_mnt_$(basename "$*" | sed "s/ //g")/$MOUNT_PATH";
+    [[ -d $MOUNT_PATH ]] && zenity --info --text="Already mounted" && exit;
+    mkdir -p "$MOUNT_PATH";
+    fuseiso "$*" "$MOUNT_PATH";
+    [[ $? -eq 0 ]] && thunar "$MOUNT_PATH" && exit;
+    rm -rf "$MOUNT_PATH";
+    zenity --error --text="Error: File not mounted. Error code: $?";
+    
+}
+
+
+# В качестве параметра функция получает путь к папке с монтированным образом и демонтирует его
+user_unmount() {
+    [[ ! -d $@ ]] && exit -1;
+    fusermount -u "$@" && rmdir "$@";
+}
+
+
+# Выполнение основных команд при запущенном deadbeef
+deadbeef_ir() {
+    [[ ! `pgrep deadbeef` ]] && exit;
+    case "$1" in
+        "prev" ) deadbeef --prev;;
+        "next" ) deadbeef --next;;
+        "plpa" ) deadbeef --play-pause;;
+        "stop" ) deadbeef --stop;;
+    esac
+}
+
+$@

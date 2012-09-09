@@ -1,0 +1,80 @@
+#! /usr/bin/perl
+
+use Cwd qw /getcwd/;
+use LWP::Simple qw /getstore/;
+use LWP::UserAgent;
+use Data::Dumper;
+use Getopt::Std qw /getopts/;
+use POSIX qw /strftime/;
+use File::Path qw /mkpath/;
+use Term::ANSIColor qw /color/;
+$|=1; # Autoflush
+
+sub pc {
+    my $color = shift; my $text = shift;
+    color($color) . $text . color('reset');
+}
+
+getopts('rep:f:t:', \%opt);
+die "Usage: $0 [OPTIONS] URL\n" unless $ARGV[0];
+
+my $keep = ! $opt{e};
+my $rewrite = $opt{r};
+my $url = $ARGV[0];
+
+
+my $filter = $opt{f} // 'jpg|gif|png';
+my $path = $opt{p} // getcwd;
+$path =~ s/%n/$thread_number/g;
+my $timeout = 30;
+if (defined $opt{t} && $opt{t} =~ /^\d+$/) {
+    $timeout = $opt{t};
+}
+
+# default patterns
+my $domain_part = $1 if $url =~ m/(http:\/\/([0-9a-zA-Z.]+\/))/;
+my $thread_number = $1 if $url =~ m/\/(\d+)\.(?:html)$/;
+my $pattern = qr{((?:[a-z]+)\/src\/\d+.(?:$filter))};
+
+# Patterns for 4chan
+if ($url =~ m/boards.4chan.org/) {
+    $domain_part = "http://images.4chan.org";
+    $thread_number = $1 if $url =~ m/(?:[a-z]+)\/res\/(\d+)$/;
+    $pattern = qr{(/(?:[a-z]+)/src/\d+.(?:$filter))};
+}
+
+
+mkpath($path) if (! -d $path);
+
+my $ua = LWP::UserAgent->new;
+$ua->timeout(10);
+$ua->agent('Mozilla/11.0');
+
+my $errors_count = 0;
+do {
+    my $response = $ua->get($url);
+    unless ($response->is_success) {
+        print pc "bright_red", "Can't download the thread $url. Error: " . $response->status_line . "\n";
+        die "Download limit of the thread has been reached.\n" if(++$errors_count >= 3);
+     } else {
+        $errors_count = 0;
+    }
+    my @matches = $response->decoded_content =~ m/$pattern/g;
+    @matches = grep {
+        ! $seen{ $_ }++
+    } @matches;
+    foreach (@matches) {
+        my $link = $domain_part . $_;
+        $_ =~ m/(\d+).(:?$filter)/;
+        my $file_name = $path . '/' . $&;
+        next if (-e $file_name && !$rewrite);
+        my $timestamp = strftime "%H:%M:%S", localtime;
+        $cts = pc "bright_blue", "[$timestamp]";
+        print "$cts Saving a file " . pc "bright_yellow", $link . "... ";
+        $response = $ua->mirror($link, $file_name);
+        print $response->code == 200 || 304
+            ? pc "bright_green", "OK [" . $response->code . "]\n"
+            : pc "bright_red", "ERR [" . $response->code . "]\n";
+    }
+    sleep $timeout if $keep;
+} while($keep);

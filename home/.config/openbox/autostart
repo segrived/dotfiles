@@ -1,0 +1,5 @@
+source ~/.fehbg 2>/dev/null &
+/usr/local/bin/volume refresh_state &
+/usr/local/bin/xscrsaverd &
+layout defaults &
+ftjerm & tint2 & d2s.pl

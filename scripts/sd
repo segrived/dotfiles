@@ -1,0 +1,39 @@
+#! /bin/bash
+
+if [ $# == 0 ]; then
+    echo "No parameters" && exit;
+elif [ $# == 1 ]; then
+    command="start"; service=$1;
+else
+    command=$1; service=$2;
+fi;
+
+if [[ ! $service =~ \.service$ ]] ; then
+    service="${service}.service";
+fi;
+
+start() {
+    sudo systemctl start $1
+}
+
+restart() {
+    sudo systemctl restart $1
+}
+
+stop() {
+    sudo systemctl stop $1
+}
+
+enable() {
+    sudo systemctl enable $1
+}
+
+status() {
+    sudo systemctl status $1
+}
+
+disable() {
+    sudo systemctl disable $1
+}
+
+$command $service

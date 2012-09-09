@@ -1,0 +1,44 @@
+#! /bin/bash
+
+MASTER_CONTROL="Master"
+DEFAULT_STEP=3
+
+current() {
+    amixer get $MASTER_CONTROL | tail -n1 | sed -E 's/.*\[([0-9]+)\%\].*/\1/';
+}
+
+up() {
+    [[ -z $1 ]] && STEP=$DEFAULT_STEP || STEP=$1;
+    amixer sset $MASTER_CONTROL "$STEP%+" unmute > /dev/null;
+}
+
+down() {
+    [[ -z $1 ]] && STEP=$DEFAULT_STEP || STEP=$1;
+    amixer sset $MASTER_CONTROL "$STEP%-" unmute > /dev/null;
+}
+
+mute() {
+    amixer sset $MASTER_CONTROL off > /dev/null;
+}
+
+unmute() {
+    amixer sset $MASTER_CONTROL on > /dev/null;
+}
+
+toggle() {
+    amixer sset $MASTER_CONTROL toggle > /dev/null;
+}
+
+is_muted() {
+    STATE=`amixer get $MASTER_CONTROL | tail -n1 | egrep -o '(on|off)' | tail -n1`;
+    [[ "$STATE" == "on" ]] && echo 0 || echo 1;
+}
+
+# Грязный фикс такой грязный
+refresh_state() {
+    toggle; toggle;
+}
+
+[[ -z $1 ]] && (echo $(current) && exit);
+
+$@

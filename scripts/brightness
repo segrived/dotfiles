@@ -1,0 +1,48 @@
+#! /bin/bash
+# -----------------------
+# Last update: 06.09.2012
+# Version 1.02
+# segrived, 2012
+
+_brightness=$(</sys/class/backlight/*/brightness);
+_max=$(</sys/class/backlight/*/max_brightness);
+
+set() {
+    if [ "$(id -u)" != "0" ]; then
+        echo "Эта функция доступна только при запуске от root пользователя" >&2;
+        exit 1;
+    fi;
+
+    if ! [[ "$1" =~ ^[0-9]+$ ]] ; then
+        echo "Уровень яркости должен быть положительным числом. Вы указали: $1" >&2;
+        exit 2;
+    fi;
+    
+    if [ $1 -gt $_max ]; then
+        echo "Максимально возможный уровень яркости ($_max) превышает указанный ($1)" >&2;
+        exit 3;
+    fi;
+    
+    echo $1 > /sys/class/backlight/*/brightness;
+}
+
+info() {
+    echo "Текущая яркость: ${_brightness}/${_max}";
+}
+
+inc() {
+    [[ -z $1 ]] && step=1 || step=$1
+    set $((${_brightness}+${step}));
+}
+
+dec() {
+    [[ -z $1 ]] && step=1 || step=$1
+    set $((${_brightness}-${step}));
+}
+
+
+
+setmin() { set 0; }
+setmax() { set $_max; }
+
+$@;

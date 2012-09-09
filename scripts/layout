@@ -1,0 +1,86 @@
+#! /bin/bash
+
+# Скрипт для удобного управления раскладками.
+# Версия 0.002
+# https://github.com/segrived
+
+default_layouts='us,ru'
+limit=4
+
+function layouts_count() {
+    echo `xkb-switch -l | wc -l`;
+}
+
+function list() {
+    [[ ! -n "$1" ]] && _separator="," || _separator="$1"
+    _lang_array=($(xkb-switch -l));
+    _lang_array=$(printf "$_separator%s" "${_lang_array[@]}");
+    _lang_array=${_lang_array:1};
+    echo $_lang_array;
+}
+
+function set() {
+    [[ ! -n $1 ]] && echo "Использование: `basename $0` set <список раскладок>" && exit;
+    _layout=$1;
+    setxkbmap -layout "${_layout}" -option "grp:ctrl_shift_toggle,grp_led:num" 2>/dev/null;
+    _exit_code=$?;
+    [[ ! $_exit_code -eq 0 ]] \
+        && echo "Ошибка при смене раскладки. Ошибка #$_exit_code" >&2 \
+        || echo "Раскладка была сменена на '$_layout'";
+}
+
+function defaults() {
+    set "$default_layouts";
+}
+
+function add() {
+    [[ ! -n $1 ]] && echo "Использование: `basename $0` add <layout>" && exit;
+    [[ $(layouts_count) -ge $limit ]] \
+        && echo "Достигнут лимит количества раскладок (4). Раскладка не добавлена." && exit;
+    _lang=$1; _lang_array=($(xkb-switch -l));
+    [[ $(echo "${_lang_array[@]:0}" | grep -o $_lang) ]] \
+        && echo "Раскладка $_lang уже загружена." >&2 && exit;
+    _lang_array[$[${#_lang_array[@]}+1]]=$1;
+    _lang_array=$(printf ",%s" "${_lang_array[@]}");
+    _lang_array=${_lang_array:1};
+    set "$_lang_array";
+}
+
+
+function remove() {
+    [[ ! -n $1 ]] && echo "Использование: `basename $0` remove <layout>" && exit;
+    _lang=$1; _lang_array=($(xkb-switch -l));
+    
+    if [ $(layouts_count) -le 1 ]; then
+        echo "Невозможно удалить последнюю раскладку";
+        exit;
+    fi;
+        
+    if [ ! $(echo "${_lang_array[@]:0}" | grep -o $_lang) ]; then
+        echo "Раскладка $_lang ещё не загружена." >&2
+        exit;
+    fi;
+    
+    for num in `seq 1 ${#_lang_array[@]}`; do
+        _index=$(($num-1));
+        _it_lang=${_lang_array[$_index]};
+        [[ $_it_lang == $_lang ]] && unset _lang_array[$_index];
+    done;
+    
+    _lang_array=$(printf ",%s" "${_lang_array[@]}");
+    _lang_array=${_lang_array:1};
+    
+    set "$_lang_array";
+}
+
+
+function usage() {
+    _app=`basename $0`;
+    echo "$_app list <separator> - Выводит текущий список раскладок";
+    echo "$_app add <layout> - Добавляет новую раскладку";
+    echo "$_app remove <layout> - Удаляет указанную раскладку";
+    echo "$_app set <layout_list> - Устанавливает раскладки, указанных параметром";
+    echo "$_app layouts_count - Отображает количество загруженных раскладок";
+}
+
+$@;

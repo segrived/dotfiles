@@ -1,0 +1,57 @@
+*color0:     #151515
+*color8:     #2d2d2d
+*color1:     #f83a22
+*color9:     #f83a22
+*color2:     #16a765
+*color10:    #16a765
+*color3:     #ffad46
+*color11:    #ffad46
+*color4:     #4986e7
+*color12:    #4986e7
+*color5:     #cd74e6
+*color13:    #cd74e6
+*color6:     #7bd148
+*color14:    #7bd148
+*color7:     #22c2c2
+*color15:    #22c2c2
+
+! Настройки Ftjerm
+ftjerm.key: f1
+ftjerm.fullscreenkey: f2
+ftjerm.width: 100%
+ftjerm.height: 30%
+ftjerm.opacity: 100%
+ftjerm.font: Terminus 9
+ftjerm.border: 1
+ftjerm.background: #111111
+ftjerm.showtab: never
+
+! Настройки URxvt
+URxvt.depth: 32
+URxvt.background: #151515
+URxvt.foreground: #ffffff
+URxvt.font: -*-terminus-medium-*-*-*-*-80-*-*-*-*-iso8859-1
+URxvt.scrollWithBuffer: True
+URxvt.secondaryScroll: False
+URxvt.secondaryWheel: True
+URxvt.urgentOnBell: True
+URxvt.geometry: 102x36
+URxvt.borderLess: False
+URxvt.internalBorder: 0
+URxvt.scrollBar: true
+URxvt.scrollColor: #222244
+URxvt.cursorBlink: True
+URxvt.saveLines: 1000
+URxvt.scrollBar_floating: True
+URxvt.scrollBar_right: True
+URxvt.scrollstyle: plain
+URxvt.pointerBlankDelay: 5
+
+! Настройки ProcMgr
+ProcMgr.title: Process Manager
+ProcMgr.iconFile: /usr/share/icons/Faenza/apps/scalable/xterm.svg
+ProcMgr.geometry: 120x50
+
+! Настройки Xcursor
+Xcursor.theme: Vanilla-DMZ
+Xcursor.size: 16

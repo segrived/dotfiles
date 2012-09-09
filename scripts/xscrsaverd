@@ -1,0 +1,52 @@
+#!/bin/bash
+
+_def_ss_timeout=300; # Время бездействия до отображения заставки (в секундах)
+_def_ch_timeout=15;  # Время ожидания между проверками (в секундах)
+_processes=(vlc);    # Список процессов, для которых нужно отключать заставку
+_pid_file="/tmp/xscrsaverd.pid";
+
+[[ ! -z $1 ]] && ss_timeout=$1 || ss_timeout=$_def_ss_timeout;
+[[ ! -z $2 ]] && ch_timeout=$2 || ch_timeout=$_def_ch_timeout;
+
+
+if [ -e $_pid_file ]; then
+    echo "Ошибка. Скрипт уже запущен.">&2 && exit;
+else
+    echo $$ > $_pid_file;
+fi;
+
+function on_exit () {
+    xset s $ss_timeout;
+    xset +dpms;
+    echo 'Удаление lock-файла...';
+    rm $_pid_file 2>/dev/null;
+}
+trap on_exit EXIT;
+
+# Текущий статус DPMS:
+# 1 - включена, 0 - отключена
+_ss_state=1;
+
+xset s $ss_timeout;
+xset +dpms;
+
+while [ true ]; do
+    _proc_matched=false;
+    for _process in ${_processes[@]}; do
+        [[ -n "`pgrep -x $_process`" ]] && _proc_matched=true && break;
+    done
+   
+    if [ $_ss_state -eq 1 ]; then
+        if $_proc_matched; then
+            _ss_state=0;
+            xset s off; xset -dpms;
+        fi;
+    else
+        if ! $_proc_matched; then
+            _ss_state=1;
+            xset s $ss_timeout; xset +dpms;
+        fi;
+    fi;
+    
+    sleep $ch_timeout;
+done

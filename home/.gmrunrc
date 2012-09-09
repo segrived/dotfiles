@@ -1,0 +1,21 @@
+Terminal = urxvt
+TermExec = ${Terminal} -e
+AlwaysInTerm = ssh telnet ftp lynx mc vi vim pine centericq perldoc man
+
+Width = 300
+Top = 25
+Left = 12
+ShowLast = 0
+
+URL_http = firefox %u
+URL_g = firefox http://google.ru/search?q="%s"&
+URL_fs = thunar %s
+URL_man = ${TermExec} sh -c 'man "%s"'
+URL_pd = ${TermExec} perldoc "%s"
+URL_sh = ${TermExec} sh -c "%s"
+
+EXT:txt,cc,cpp,h,java,html,htm,epl,tex,latex,js,css,xml,xsl,am,php,css,js,py = vim %s
+EXT:mpeg,mpg,avi,mkv,flv = vlc %s
+EXT:mp3,wav,flac,ogg = deadbeef %s
+EXT:jpg,jpeg,gif,png,bmp = mirage %s
+EXT:doc,docx,rtf = libreoffice --writer %s
