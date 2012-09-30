@@ -35,8 +35,6 @@ export LESS_TERMCAP_us=$'\033[01;36m'
 export BROWSER='firefox -new-tab'
 export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
 
-export PATH="${PATH}:$HOME/bin"
-
 HISTCONTROL=erasedups
 HISTSIZE=200
 

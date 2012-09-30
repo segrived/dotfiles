@@ -407,14 +407,6 @@ widget_class "*Gedit*Pane*"                    style "murrine-gedit-sidetoolbar"
 ################################
 widget "gtk-tooltip*" style "murrine-tooltips"
 
-###################################################
-# Special cases and work arounds
-###################################################
-
-# Special case the nautilus-extra-view-widget
-# ToDo: A more generic approach for all applications that have a widget like this.
-widget "*.nautilus-extra-view-widget" style : highest "murrine-nautilus-location"
-
 # Work around for http://bugzilla.gnome.org/show_bug.cgi?id=382646
 # Note that the work around assumes that the combobox is _not_ in
 # appears-as-list mode.

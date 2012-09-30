@@ -24,7 +24,7 @@ ftjerm.opacity: 100%
 ftjerm.font: Terminus 9
 ftjerm.border: 1
 ftjerm.background: #111111
-ftjerm.showtab: never
+ftjerm.showtab: one
 
 ! Настройки URxvt
 URxvt.depth: 32

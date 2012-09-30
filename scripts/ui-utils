@@ -48,4 +48,10 @@ deadbeef_ir() {
     esac
 }
 
+run_vm() {
+    [[ -z $2 ]] && vt=12 || vt=$2
+    echo "virtualbox --startvm $1 --fullscreen" > /tmp/vm-cmd
+    startx /tmp/vm-cmd :0 -- vt${vt}
+}
+
 $@

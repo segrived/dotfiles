@@ -16,20 +16,14 @@
         </action>
     </item>
     
-    <menu id="internet" label="Internet">
-        <item label="Firefox">
-            <action name="Execute">
-                <command>firefox</command>    
-            </action>
-        </item>
-        
-        <item label="Thunderbird">
-            <action name="Execute">
-                <command>thunderbird</command>    
-            </action>
-        </item>
-    </menu>
- 
+    <item label="Firefox">
+        <action name="Execute">
+            <command>firefox</command>    
+        </action>
+    </item>
+    
+    <separator />
+    
     <menu id="programming" label="Programming">
         <item label="GVim">
             <action name="Execute">
@@ -40,6 +34,12 @@
         <item label="Geany">
             <action name="Execute">
                 <command>geany</command>    
+            </action>
+        </item>
+        
+        <item label="MonoDevelop">
+            <action name="Execute">
+                <command>monodevelop</command>    
             </action>
         </item>
     </menu>
@@ -114,6 +114,34 @@
    
     <separator label="Tools" />
     
+    <menu id="vm" label="VMs">
+        <item label="Debian 6">
+            <action name="Execute">
+                <execute>ui-utils run_vm Debian_6</execute>
+            </action>
+        </item>
+    
+        <item label="Windows XP">
+            <action name="Execute">
+                <execute>ui-utils run_vm Windows_XP</execute>
+            </action>
+        </item>
+    
+        <item label="Windows 7">
+            <action name="Execute">
+                <command>ui-utils run_vm Windows_7</command>    
+            </action>
+        </item>
+        
+        <separator />
+        
+        <item label="VirtualBox GUI">
+            <action name="Execute">
+                <execute>virtualbox</execute>
+            </action>
+        </item>
+    </menu>
+    
     <menu id="screenshots" label="Screenshot">
         <item label="Full screen">
             <action name="Execute">
@@ -139,12 +167,6 @@
         
         <menu id="configs" label="Configs">
             <menu id="system_cfg" label="Global">
-                <item label="/etc/inittab">
-                    <action name="Execute">
-                        <command>gksu leafpad /etc/inittab</command>    
-                    </action>
-                </item>
-                
                 <item label="/etc/pacman.conf">
                     <action name="Execute">
                         <command>gksu leafpad /etc/pacman.conf</command>    
@@ -159,15 +181,15 @@
             </menu>
             
             <menu id="user" label="User">
+                <item label="fonts.conf">
+                    <action name="Execute">
+                        <command>leafpad ~/.config/fontconfig/fonts.conf</command>    
+                    </action>
+                </item>
+            
                 <item label=".bashrc">
                     <action name="Execute">
                         <command>leafpad ~/.bashrc</command>    
-                    </action>
-                </item>
-                
-                <item label=".bashrc">
-                    <action name="Execute">
-                        <command>leafpad ~/.fonts.conf</command>    
                     </action>
                 </item>
                 
@@ -182,6 +204,26 @@
                         <command>leafpad ~/.xinitrc</command>    
                     </action>
                 </item>
+                
+                <menu id="user_openbox" label="Openbox">
+                    <item label="autostart">
+                        <action name="Execute">
+                            <command>leafpad ~/.config/openbox/autostart</command>    
+                        </action>
+                    </item>   
+                    
+                    <item label="menu.xml">
+                        <action name="Execute">
+                            <command>leafpad ~/.config/openbox/menu.xml</command>    
+                        </action>
+                    </item> 
+                    
+                    <item label="rc.xml">
+                        <action name="Execute">
+                            <command>leafpad ~/.config/openbox/rc.xml</command>    
+                        </action>
+                    </item> 
+                </menu>
             </menu>
   
             <separator />
@@ -197,7 +239,7 @@
             <action name="Reconfigure" />
         </item>
     </menu>
-      
+
     <menu id="shutdown" label="Shutdown">
         <item label="Logout">
             <action name="Exit"></action>

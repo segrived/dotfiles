@@ -3,7 +3,6 @@
 use Cwd qw /getcwd/;
 use LWP::Simple qw /getstore/;
 use LWP::UserAgent;
-use Data::Dumper;
 use Getopt::Std qw /getopts/;
 use POSIX qw /strftime/;
 use File::Path qw /mkpath/;
@@ -15,6 +14,14 @@ sub pc {
     color($color) . $text . color('reset');
 }
 
+# --- Ключи ---
+# Без параметров:
+# e - оставлять скрипт запущенным (проверять наличие новых изображение)
+# r - перезаписывать файлы с одинакоыми именами
+# С параметрами:
+# p - путь к директории, куда буду сохраняться файлы
+# f - фильтр сохраняемых файлов (например "jpg|png")
+# t - время в секундах между проверками
 getopts('rep:f:t:', \%opt);
 die "Usage: $0 [OPTIONS] URL\n" unless $ARGV[0];
 
