@@ -167,6 +167,7 @@ inkscape
 inotify-tools
 inputproto
 iproute2
+iptables
 iputils
 isl
 jack
@@ -355,7 +356,9 @@ ncurses
 neon
 net-snmp
 netcfg
+netstat-nat
 nettle
+nmap
 nodejs
 nspr
 nss
