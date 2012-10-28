@@ -91,6 +91,8 @@ function ghclone() {
     git clone git://github.com/$1/$2.git $dest_dir
 }
 
+alias gha='git log --graph --date=relative --all --topo-order --pretty=format:'\''%C(cyan)[%an]%Creset %C(green bold)%d%Creset %C(yellow)%h%Creset : %s %C(cyan)[%ad]%Creset'\'''
+
 function env-update() {
     source ~/.bashrc
     xrdb -retain ~/.Xresources

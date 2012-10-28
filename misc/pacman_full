@@ -81,6 +81,7 @@ findutils
 firefox
 fixesproto
 flac
+flashplugin
 flex
 fontconfig
 fontsproto
@@ -116,6 +117,7 @@ glib2
 glibc
 glibmm
 glproto
+glu
 gmp
 gmrun
 gnome-mime-data
@@ -166,6 +168,7 @@ inetutils
 inkscape
 inotify-tools
 inputproto
+inxi
 iproute2
 iptables
 iputils
@@ -236,6 +239,7 @@ libgusb
 libice
 libid3tag
 libidl2
+libidn
 libieee1284
 libjpeg-turbo
 libkate
@@ -362,11 +366,13 @@ nmap
 nodejs
 nspr
 nss
+nss-myhostname
 nvidia
 nvidia-utils
 openal
 openbox
 opencollada
+opencolorio
 opencore-amr
 openexr
 openimageio
@@ -481,7 +487,9 @@ terminus-font
 texinfo
 thunar
 thunar-volman
+tig
 tint2
+tmux
 traceroute
 tree
 ttf-dejavu
@@ -495,6 +503,7 @@ unzip
 usbutils
 util-linux
 v4l-utils
+v8
 vi
 videoproto
 viewnior
