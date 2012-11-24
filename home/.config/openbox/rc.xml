@@ -31,42 +31,42 @@
     
     <font place="ActiveWindow">
         <name>Ubuntu</name>
-        <size>9</size>
+        <size>11</size>
         <weight>normal</weight>
         <slant>normal</slant>
     </font>
     
     <font place="InactiveWindow">
         <name>Ubuntu</name>
-        <size>9</size>
+        <size>11</size>
         <weight>normal</weight>
         <slant>normal</slant>
     </font>
     
     <font place="MenuHeader">
         <name>Ubuntu</name>
-        <size>9</size>
+        <size>11</size>
         <weight>bold</weight>
         <slant>normal</slant>
     </font>
     
     <font place="MenuItem">
         <name>Ubuntu</name>
-        <size>8</size>
+        <size>10</size>
         <weight>light</weight>
         <slant>normal</slant>
     </font>
     
     <font place="ActiveOnScreenDisplay">
         <name>Ubuntu</name>
-        <size>9</size>
+        <size>11</size>
         <weight>normal</weight>
         <slant>normal</slant>
     </font>
     
     <font place="InactiveOnScreenDisplay">
         <name>Ubuntu</name>
-        <size>9</size>
+        <size>11</size>
         <weight>normal</weight>
         <slant>normal</slant>
     </font>
